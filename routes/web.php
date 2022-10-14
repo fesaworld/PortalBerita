@@ -7,5 +7,5 @@ require_once('includes/auth.php');
 Route::group([
     'middleware' => 'auth',
 ], function() {
-    require_once('includes/product.php');
+    require_once('includes/category.php');
 });

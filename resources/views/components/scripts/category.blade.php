@@ -1,0 +1,201 @@
+<script>
+    let product_id;
+
+    const create = () => {
+        $('#createForm').trigger('reset');
+        $('#createModal').modal('show');
+    }
+
+    const deleteData = (id) => {
+        Swal.fire({
+            title: 'Apa anda yakin untuk menghapus barang haram ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, aing tobat',
+            cancelButtonText: 'Teu, gas maksiat'
+        }).then((result) => {
+            Swal.close();
+
+            if(result.value) {
+                Swal.fire({
+                    title: 'Mohon tunggu',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    willOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+
+                $.ajax({
+                    type: "delete",
+                    url: `/category/${id}`,
+                    dataType: "json",
+                    success: function (response) {
+                        Swal.close();
+
+                        if(response.status) {
+                            Swal.fire(
+                                'Success!',
+                                response.msg,
+                                'success'
+                            )
+
+                            $('#table').DataTable().ajax.reload();
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                response.msg,
+                                'warning'
+                            )
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    const edit = (id) => {
+        Swal.fire({
+            title: 'Mohon tunggu',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            willOpen: () => {
+                Swal.showLoading()
+            }
+        });
+
+        product_id = id;
+
+        $.ajax({
+            type: "get",
+            url: `/category/${category_id}`,
+            dataType: "json",
+            success: function (response) {
+                $('#category_name').val(response.categoryName);
+                $('#category_detail').val(response.categoryDetail);
+                $('#category_slug').val(response.categorySlug);
+
+                Swal.close();
+                $('#editModal').modal('show');
+            }
+        });
+    }
+
+    $(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        });
+
+
+        $('#table').DataTable({
+            order: [],
+            lengthMenu: [[10, 25, 50, 100, -1], ['10', '25', '50', '100', 'Semua']],
+            filter: true,
+            processing: true,
+            responsive: true,
+            serverSide: true,
+            ajax: {
+                url: '/category/kumahaaingwe'
+            },
+            "columns":
+            [
+                { data: 'DT_RowIndex', orderable: false, searchable: false},
+                { data: 'category_name', name:'category.category_name'},
+                { data: 'category_detail', name:'category.category_name'},
+                { data: 'category_slug', name:'category.category_name'},
+                { data: 'action', orderable: false, searchable: false},
+            ]
+        });
+
+        $('#createSubmit').click(function (e) {
+            e.preventDefault();
+
+            var formData = $('#createForm').serialize();
+
+            Swal.fire({
+                title: 'Mohon tunggu',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                willOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+
+            $.ajax({
+                type: "post",
+                url: "/category",
+                data: formData,
+                dataType: "json",
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    Swal.close();
+
+                    if(data.status) {
+                        Swal.fire(
+                            'Success!',
+                            data.msg,
+                            'success'
+                        )
+
+                        $('#createModal').modal('hide');
+                        $('#table').DataTable().ajax.reload();
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            data.msg,
+                            'warning'
+                        )
+                    }
+                }
+            })
+        });
+
+        $('#editSubmit').click(function (e) {
+            e.preventDefault();
+
+            var formData = $('#editForm').serialize();
+
+            Swal.fire({
+                title: 'Mohon tunggu',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                willOpen: () => {
+                    Swal.showLoading()
+                }
+            });
+
+            $.ajax({
+                type: "post",
+                url: `/category/${category_id}`,
+                data: formData,
+                dataType: "json",
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    Swal.close();
+
+                    if(data.status) {
+                        Swal.fire(
+                            'Success!',
+                            data.msg,
+                            'success'
+                        )
+
+                        product_id = null;
+                        $('#editModal').modal('hide');
+                        $('#table').DataTable().ajax.reload();
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            data.msg,
+                            'warning'
+                        )
+                    }
+                }
+            })
+        });
+    });
+</script>

@@ -40,12 +40,15 @@
           </div>
           <div class="card-body">
             <div class="table-responsive">
+                @can('create_product')
+                    <button type="button" class="my-3 btn btn-primary" onclick="create()">Tambah Kategori</button>
+                @endcan
                 <table class="table table-hover table-striped table-border" id="table">
                     <thead>
                         <th>#</th>
-                        <th>Nama</th>
-                        <th>Kategori</th>
-                        <th>Harga</th>
+                        <th>Nama Kategori</th>
+                        <th>Detail Kategori</th>
+                        <th>Slug Kategori</th>
                         <th>Tindakan</th>
                     </thead>
                     <tbody></tbody>
@@ -53,6 +56,8 @@
             </div>
           </div>
         </div>
+        @include('components.modals.category.create')
+        @include('components.modals.category.edit')
         <!-- /.card -->
 
       </section>

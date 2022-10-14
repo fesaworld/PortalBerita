@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{ url('/product') }}" class="brand-link">
+    <a href="{{ url('/category') }}" class="brand-link">
       <img src="{{ asset('assets/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">{{ env('APP_NAME') }}</span>
     </a>
@@ -24,7 +24,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                <a href="{{ url('/product') }}" class="nav-link active">
+                <a href="{{ url('/category') }}" class="nav-link active">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>
                     Dashboard
@@ -74,7 +74,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/product') }}" class="nav-link active">
+                    <a href="{{ url('/category') }}" class="nav-link active">
                     <i class="nav-icon fas fa-th"></i>
                     <p>
                         Kategori

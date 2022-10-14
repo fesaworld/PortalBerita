@@ -25,38 +25,33 @@ class IndexSeeder extends Seeder
             'name' => 'Admin',
         ]);
 
-        $user = Role::create([
-            'name' => 'User',
-        ]);
-
         $permission = Permission::create([
-            'name' => 'see_product',
-        ]);
-
-        $admin->givePermissionTo($permission);
-        $user->givePermissionTo($permission);
-
-        $permission = Permission::create([
-            'name' => 'create_product',
+            'name' => 'see_category',
         ]);
 
         $admin->givePermissionTo($permission);
 
         $permission = Permission::create([
-            'name' => 'edit_product',
+            'name' => 'create_category',
         ]);
 
         $admin->givePermissionTo($permission);
 
         $permission = Permission::create([
-            'name' => 'delete_product',
+            'name' => 'edit_category',
+        ]);
+
+        $admin->givePermissionTo($permission);
+
+        $permission = Permission::create([
+            'name' => 'delete_category',
         ]);
 
         $admin->givePermissionTo($permission);
 
         $data   = [
-            'name'      => 'supra',
-            'email'     => 'supra@mail.com',
+            'name'      => 'Admin Berita',
+            'email'     => 'super@mail.com',
             'password'  => Hash::make('12345678')
         ];
 
@@ -73,15 +68,5 @@ class IndexSeeder extends Seeder
         $user = User::create($data);
 
         $user->syncRoles('Admin');
-
-        $data   = [
-            'name'      => $faker->name,
-            'email'     => 'user@mail.com',
-            'password'  => Hash::make('12345678')
-        ];
-
-        $userData = User::create($data);
-
-        $userData->syncRoles('User');
     }
 }

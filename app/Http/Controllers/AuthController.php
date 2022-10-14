@@ -43,11 +43,10 @@ class AuthController extends Controller
 
 
         if(Auth::check()) {
-            return redirect()->to('/product');
+            return redirect()->to('/category');
         }
 
         return redirect()->back()->withErrors(['error' => 'Email / Password salah'])->withInput($request->all);
-
     }
 
     public function logout()
