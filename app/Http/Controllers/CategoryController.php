@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -31,11 +32,6 @@ class CategoryController extends Controller
                 'msg'       => 'Mohon masukan detail kategori',
                 'status'    => false
             ];
-        } elseif($request->slug == NULL) {
-            $json = [
-                'msg'       => 'Mohon masukan detail kategori',
-                'status'    => false
-            ];
         } else {
             try{
                 DB::transaction(function() use($request) {
@@ -43,7 +39,7 @@ class CategoryController extends Controller
                         'created_at' => date('Y-m-d H:i:s'),
                         'category_name' => $request->name,
                         'category_detail' => $request->detail,
-                        'category_slug' => $request->slug,
+                        'category_slug' => Str::slug($request->name, '-'),
                     ]);
                 });
 
@@ -102,19 +98,14 @@ class CategoryController extends Controller
                 'msg'       => 'Mohon masukan detail kategori',
                 'status'    => false
             ];
-        } elseif($request->slug == NULL) {
-            $json = [
-                'msg'       => 'Mohon masukan slug kategori',
-                'status'    => false
-            ];
-        }else {
+        } else {
             try{
                 DB::transaction(function() use($request, $id) {
                     DB::table('categorys')->where('id', $id)->update([
                         'updated_at' => date('Y-m-d H:i:s'),
                         'category_name' => $request->name,
                         'category_detail' => $request->detail,
-                        'category_slug' => $request->slug,
+                        'category_slug' => Str::slug($request->name, '-'),
                     ]);
                 });
 

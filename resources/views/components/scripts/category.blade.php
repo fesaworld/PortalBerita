@@ -73,7 +73,7 @@
             success: function (response) {
                 $('#name').val(response.category_name);
                 $('#detail').val(response.category_detail);
-                $('#slug').val(response.category_slug);
+                {{--  $('#slug').val(response.category_slug);  --}}
 
                 Swal.close();
                 $('#editModal').modal('show');

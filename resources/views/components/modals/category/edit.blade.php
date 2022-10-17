@@ -17,10 +17,6 @@
                 <label for="detail">Kategori Detail</label>
                 <input type="text" class="form-control" id="detail" name="detail">
             </div>
-            <div class="form-group">
-                <label for="slug">Slug</label>
-                <input type="text" class="form-control" id="slug" name="slug">
-            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
