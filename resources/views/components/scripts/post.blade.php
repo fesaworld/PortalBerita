@@ -74,8 +74,6 @@ ku nger<script>
                 $('#title').val(response.title);
                 $('#category_id').val(response.category_id);
                 $('#body').val(response.body);
-                $('#image').val(response.image);
-
                 $('#editModal').modal('show');
                 Swal.close();
             }
@@ -159,7 +157,7 @@ ku nger<script>
         $('#editSubmit').click(function (e) {
             e.preventDefault();
 
-            var formData = $('#editForm').serialize();
+            var formData = new FormData($("#editForm")[0]);
 
             Swal.fire({
                 title: 'Mohon tunggu',
@@ -177,6 +175,7 @@ ku nger<script>
                 dataType: "json",
                 cache: false,
                 processData: false,
+                contentType: false,
                 success: function(data) {
                     Swal.close();
 

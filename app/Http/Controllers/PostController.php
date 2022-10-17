@@ -42,6 +42,7 @@ class PostController extends Controller
             ];
         } else {
             try{
+                dd($request->file());
                 DB::transaction(function() use($request) {
                     DB::table('posts')->insert([
                         'created_at' => date('Y-m-d H:i:s'),
@@ -118,16 +119,46 @@ class PostController extends Controller
             ];
         } else {
             try{
-                DB::transaction(function() use($request, $id) {
-                    DB::table('posts')->where('id', $id)->update([
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'title' => $request->title,
-                        'category_id' => $request->category_id,
-                        'slug' => Str::slug($request->title, '-'),
-                        'body' => $request->body,
-                        'image' => $request->image,
-                    ]);
-                });
+                if($request->file('image'))
+                {
+                    $post_image = $request->file('image');
+                    $fileName = DB::table('posts')->where('id', $id)->get()->first()->image;
+
+                    if($fileName)
+                    {
+                        $pleaseRemove = base_path('public/assets/image/').$fileName;
+
+                        if(file_exists($pleaseRemove)) {
+                            unlink($pleaseRemove);
+                        }
+                    }
+
+                    $extension  = $post_image->getClientOriginalExtension();
+                    $featuredImageName  = date('YmdHis').'.'.$extension;
+                    $destination = base_path('public/assets/image/');
+                    $post_image->move($destination, $featuredImageName);
+
+                    DB::transaction(function() use($request, $id, $featuredImageName) {
+                        DB::table('posts')->where('id', $id)->update([
+                            'updated_at' => date('Y-m-d H:i:s'),
+                            'title' => $request->title,
+                            'category_id' => $request->category_id,
+                            'slug' => Str::slug($request->title, '-'),
+                            'body' => $request->body,
+                            'image' => $featuredImageName,
+                        ]);
+                    });
+                }else{
+                    DB::transaction(function() use($request, $id) {
+                        DB::table('posts')->where('id', $id)->update([
+                            'updated_at' => date('Y-m-d H:i:s'),
+                            'title' => $request->title,
+                            'category_id' => $request->category_id,
+                            'slug' => Str::slug($request->title, '-'),
+                            'body' => $request->body,
+                        ]);
+                    });
+                }
 
                 $json = [
                     'msg' => 'Produk berhasil disunting',

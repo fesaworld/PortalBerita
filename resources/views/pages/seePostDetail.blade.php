@@ -36,9 +36,10 @@
               </button>
             </div>
             <div class="card-body">
-                    {{--  @dd($post)  --}}
                     <br>
-
+                    @if($post->image)
+                        <img src={{ asset('assets/image/' . $post->image) }} alt={{ $post->title }} class="card-img-top">
+                    @endif
                         <h1>{{$post->title}}</h1>
                         <p>{{$post->body}}</p>
 
