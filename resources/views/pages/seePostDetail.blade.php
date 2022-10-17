@@ -42,7 +42,7 @@
                         </div>
                         <div class="card-body">
                                 <h1>{{$post->title}}</h1>
-                                <p>{{$post->body}}</p>
+                                <p>{!! $post->body !!}</p>
                             </div>
                         </div>
                     </div>

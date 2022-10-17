@@ -161,7 +161,7 @@ class PostController extends Controller
                             'title' => $request->title,
                             'category_id' => $request->category_id,
                             'slug' => Str::slug($request->title, '-'),
-                            'body' => $request->body,
+                            'body' => str_replace('<p><br></p>','',$request->body),
                             'image' => $featuredImageName,
                         ]);
                     });
@@ -172,7 +172,7 @@ class PostController extends Controller
                             'title' => $request->title,
                             'category_id' => $request->category_id,
                             'slug' => Str::slug($request->title, '-'),
-                            'body' => $request->body,
+                            'body' => str_replace('<p><br></p>','',$request->body),
                         ]);
                     });
                 }

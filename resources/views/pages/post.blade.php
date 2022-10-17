@@ -4,6 +4,7 @@
     @push('style')
         @include('components.styles.datatables')
         @include('components.styles.dropify')
+        @include('components.styles.summerNote')
     @endpush
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -49,7 +50,6 @@
                             <th>Judul Post</th>
                             <th>Kategori Post</th>
                             <th>Slug Post</th>
-                            <th>Isi Post</th>
                             <th>Foto Post</th>
                             <th>Tindakan</th>
                         </thead>
@@ -68,6 +68,7 @@
         @include('components.scripts.datatables')
         @include('components.scripts.sweetalert')
         @include('components.scripts.dropify')
+        @include('components.scripts.summerNote')
         @include($script)
       @endpush
 @endsection

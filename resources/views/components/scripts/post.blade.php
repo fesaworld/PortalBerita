@@ -73,7 +73,8 @@
             success: function (response) {
                 $('#title').val(response.title);
                 $('#category_id').val(response.category_id);
-                $('#body').text(response.body);
+                $('#body').summernote('reset');
+                $('#body').summernote('editor.pasteHTML', response.body);
                 $('#editModal').modal('show');
                 $(".dropify-clear").click();
                 Swal.close();
@@ -104,7 +105,6 @@
                 { data: 'title', name:'post.title'},
                 { data: 'post_category', name:'categorys.category_name'},
                 { data: 'slug', name:'post.slug'},
-                { data: 'body', name:'post.body'},
                 { data: 'image', name:'post.image'},
                 { data: 'action', orderable: false, searchable: false},
             ]
