@@ -57,13 +57,6 @@ class AuthController extends Controller
         return redirect()->to('/');
     }
 
-    public function view()
-    {
-        return view('main', [
-            'title' => 'All Post',
-            'posts' => Post::latest()->paginate(3)
-        ]);
-    }
 
     public function loginUser()
     {
