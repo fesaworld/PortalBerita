@@ -3,6 +3,7 @@
 @section('content')
     @push('style')
         @include('components.styles.datatables')
+        @include('components.styles.dropify')
     @endpush
     <!-- Content Header (Page header) -->
     <section class="content-header">

@@ -1,4 +1,4 @@
-ku nger<script>
+<script>
     let post_id;
 
     const create = () => {
@@ -73,8 +73,9 @@ ku nger<script>
             success: function (response) {
                 $('#title').val(response.title);
                 $('#category_id').val(response.category_id);
-                $('#body').val(response.body);
+                $('#body').text(response.body);
                 $('#editModal').modal('show');
+                $(".dropify-clear").click();
                 Swal.close();
             }
         });
@@ -87,7 +88,6 @@ ku nger<script>
             }
         });
 
-{{--  ini buat tampilan tabel view utama  --}}
         $('#table').DataTable({
             order: [],
             lengthMenu: [[10, 25, 50, 100, -1], ['10', '25', '50', '100', 'Semua']],
@@ -113,7 +113,7 @@ ku nger<script>
         $('#createSubmit').click(function (e) {
             e.preventDefault();
 
-            var formData = $('#createForm').serialize();
+            var formData = new FormData($("#createForm")[0]);
 
             Swal.fire({
                 title: 'Mohon tunggu',
@@ -122,34 +122,35 @@ ku nger<script>
                 willOpen: () => {
                     Swal.showLoading()
                 }
-            }
-        );
+            });
 
-        $.ajax({
-            type: "post",
-            url: "/post",
-            data: formData,
-            dataType: "json",
-            cache: false,
-            processData: false,
-            success: function(data) {
-                Swal.close();
+            $.ajax({
+                type: "post",
+                url: "/post",
+                data: formData,
+                dataType: "json",
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    Swal.close();
 
-                if(data.status) {
-                    Swal.fire(
-                        'Success!',
-                        data.msg,
-                        'success'
-                    )
+                    if(data.status) {
+                        Swal.fire(
+                            'Success!',
+                            data.msg,
+                            'success'
+                        )
 
-                    $('#createModal').modal('hide');
-                    $('#table').DataTable().ajax.reload();
-                } else {
-                    Swal.fire(
-                        'Error!',
-                        data.msg,
-                        'warning'
-                    )}
+                        $('#createModal').modal('hide');
+                        $('#table').DataTable().ajax.reload();
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            data.msg,
+                            'warning'
+                        )
+                    }
                 }
             })
         });
