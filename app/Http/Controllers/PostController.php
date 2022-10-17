@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use Exception;
+use App\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -25,24 +27,24 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        if($request->title == NULL) {
+        if ($request->title == NULL) {
             $json = [
                 'msg'       => 'Mohon masukan judul post',
                 'status'    => false
             ];
-        } elseif(!$request->has('category_id')) {
+        } elseif (!$request->has('category_id')) {
             $json = [
                 'msg'       => 'Mohon pilih kategori post',
                 'status'    => false
             ];
-        } elseif(!$request->has('body')) {
+        } elseif (!$request->has('body')) {
             $json = [
                 'msg'       => 'Mohon masukan isi post',
                 'status'    => false
             ];
         } else {
-            try{
-                DB::transaction(function() use($request) {
+            try {
+                DB::transaction(function () use ($request) {
                     DB::table('posts')->insert([
                         'created_at' => date('Y-m-d H:i:s'),
                         'title' => $request->title,
@@ -57,7 +59,7 @@ class PostController extends Controller
                     'msg' => 'Kategori berhasil ditambahkan',
                     'status' => true
                 ];
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $json = [
                     'msg'       => 'Data belhum lengkap',
                     'status'    => false,
@@ -69,25 +71,25 @@ class PostController extends Controller
         return Response::json($json);
     }
 
-    public function show($id) {
-        if(is_numeric($id))
-        {
+    public function show($id)
+    {
+        if (is_numeric($id)) {
             $data = DB::table('posts')->where('id', $id)->first();
 
             return Response::json($data);
         }
 
         $data = DB::table('posts')
-        ->join('categorys', 'categorys.id', '=', 'posts.category_id')
-        ->select([
-            'posts.*', 'categorys.category_name as post_category'
-        ])
-        ->orderBy('posts.id', 'desc');
+            ->join('categorys', 'categorys.id', '=', 'posts.category_id')
+            ->select([
+                'posts.*', 'categorys.category_name as post_category'
+            ])
+            ->orderBy('posts.id', 'desc');
 
         return DataTables::of($data)
             ->addColumn(
                 'action',
-                function($row) {
+                function ($row) {
                     $data = [
                         'id' => $row->id
                     ];
@@ -101,24 +103,24 @@ class PostController extends Controller
 
     public function update(Request $request, $id)
     {
-        if($request->title == NULL) {
+        if ($request->title == NULL) {
             $json = [
                 'msg'       => 'Mohon masukan judul post',
                 'status'    => false
             ];
-        } elseif(!$request->has('category_id')) {
+        } elseif (!$request->has('category_id')) {
             $json = [
                 'msg'       => 'Mohon pilih kategori post',
                 'status'    => false
             ];
-        } elseif(!$request->has('body')) {
+        } elseif (!$request->has('body')) {
             $json = [
                 'msg'       => 'Mohon masukan isi post',
                 'status'    => false
             ];
         } else {
-            try{
-                DB::transaction(function() use($request, $id) {
+            try {
+                DB::transaction(function () use ($request, $id) {
                     DB::table('posts')->where('id', $id)->update([
                         'updated_at' => date('Y-m-d H:i:s'),
                         'title' => $request->title,
@@ -133,7 +135,7 @@ class PostController extends Controller
                     'msg' => 'Produk berhasil disunting',
                     'status' => true
                 ];
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $json = [
                     'msg'       => 'error',
                     'status'    => false,
@@ -147,8 +149,8 @@ class PostController extends Controller
 
     public function destroy($id)
     {
-        try{
-            DB::transaction(function() use($id){
+        try {
+            DB::transaction(function () use ($id) {
                 DB::table('posts')->where('id', $id)->delete();
             });
 
@@ -156,7 +158,7 @@ class PostController extends Controller
                 'msg' => 'Kategori berhasil dihapus',
                 'status' => true
             ];
-        } catch(Exception $e){
+        } catch (Exception $e) {
             $json = [
                 'msg' => 'error',
                 'status' => false,
