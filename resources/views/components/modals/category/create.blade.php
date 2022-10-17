@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">Tambah Produk</h5>
+            <h5 class="modal-title">Tambah Kategori</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -14,12 +14,12 @@
                 <input type="text" class="form-control" id="createName" name="name">
             </div>
             <div class="form-group">
-                <label for="createName">Kategori Detail</label>
-                <input type="text" class="form-control" id="createName" name="detail">
+                <label for="createDetail">Kategori Detail</label>
+                <input type="text" class="form-control" id="createDetail" name="detail">
             </div>
             <div class="form-group">
-                <label for="createPrice">Slug</label>
-                <input type="text" class="form-control" id="createPrice" name="slug">
+                <label for="createSlug">Slug</label>
+                <input type="text" class="form-control" id="createSlug" name="slug">
             </div>
         </div>
         <div class="modal-footer">

@@ -7,43 +7,49 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
-class CategoryController extends Controller
+class PostController extends Controller
 {
     public function index()
     {
+        $categorys = DB::table('categorys')->get();
+
         $data = [
-            'script' => 'components.scripts.category'
+            'categorys'         => $categorys,
+            'script'            => 'components.scripts.post'
         ];
 
-        return view('pages.category', $data);
+        return view('pages.post', $data);
     }
 
     public function store(Request $request)
     {
-        if($request->name == NULL) {
+        if($request->title == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan nama kategori',
+                'msg'       => 'Mohon masukan judul post',
                 'status'    => false
             ];
-        } elseif($request->detail == NULL) {
+        } elseif(!$request->has('category_id')) {
             $json = [
-                'msg'       => 'Mohon masukan detail kategori',
+                'msg'       => 'Mohon pilih kategori post',
                 'status'    => false
             ];
-        } elseif($request->slug == NULL) {
+        } elseif(!$request->has('body')) {
             $json = [
-                'msg'       => 'Mohon masukan detail kategori',
+                'msg'       => 'Mohon masukan isi post',
                 'status'    => false
             ];
         } else {
             try{
                 DB::transaction(function() use($request) {
-                    DB::table('categorys')->insert([
+                    DB::table('posts')->insert([
                         'created_at' => date('Y-m-d H:i:s'),
-                        'category_name' => $request->name,
-                        'category_detail' => $request->detail,
-                        'category_slug' => $request->slug,
+                        'title' => $request->title,
+                        'category_id' => $request->category_id,
+                        'slug' => Str::slug($request->title, '-'),
+                        'body' => $request->body,
+                        'image' => $request->image,
                     ]);
                 });
 
@@ -53,7 +59,7 @@ class CategoryController extends Controller
                 ];
             } catch(Exception $e) {
                 $json = [
-                    'msg'       => 'error',
+                    'msg'       => 'Data belhum lengkap',
                     'status'    => false,
                     'e'         => $e
                 ];
@@ -66,14 +72,17 @@ class CategoryController extends Controller
     public function show($id) {
         if(is_numeric($id))
         {
-            $data = DB::table('categorys')->where('id', $id)->first();
+            $data = DB::table('posts')->where('id', $id)->first();
 
             return Response::json($data);
         }
 
-        $data = DB::table('categorys')
-            ->select(['categorys.*'])
-        ->orderBy('categorys.id', 'desc');
+        $data = DB::table('posts')
+        ->join('categorys', 'categorys.id', '=', 'posts.category_id')
+        ->select([
+            'posts.*', 'categorys.category_name as post_category'
+        ])
+        ->orderBy('posts.id', 'desc');
 
         return DataTables::of($data)
             ->addColumn(
@@ -83,7 +92,7 @@ class CategoryController extends Controller
                         'id' => $row->id
                     ];
 
-                    return view('components.buttons.category', $data);
+                    return view('components.buttons.post', $data);
                 }
             )
             ->addIndexColumn()
@@ -92,29 +101,31 @@ class CategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-        if($request->name == NULL) {
+        if($request->title == NULL) {
             $json = [
-                'msg'       => 'Mohon masukan nama kategori',
+                'msg'       => 'Mohon masukan judul post',
                 'status'    => false
             ];
-        } elseif($request->detail == NULL) {
+        } elseif(!$request->has('category_id')) {
             $json = [
-                'msg'       => 'Mohon masukan detail kategori',
+                'msg'       => 'Mohon pilih kategori post',
                 'status'    => false
             ];
-        } elseif($request->slug == NULL) {
+        } elseif(!$request->has('body')) {
             $json = [
-                'msg'       => 'Mohon masukan slug kategori',
+                'msg'       => 'Mohon masukan isi post',
                 'status'    => false
             ];
-        }else {
+        } else {
             try{
                 DB::transaction(function() use($request, $id) {
-                    DB::table('categorys')->where('id', $id)->update([
+                    DB::table('posts')->where('id', $id)->update([
                         'updated_at' => date('Y-m-d H:i:s'),
-                        'category_name' => $request->name,
-                        'category_detail' => $request->detail,
-                        'category_slug' => $request->slug,
+                        'title' => $request->title,
+                        'category_id' => $request->category_id,
+                        'slug' => Str::slug($request->title, '-'),
+                        'body' => $request->body,
+                        'image' => $request->image,
                     ]);
                 });
 
@@ -138,7 +149,7 @@ class CategoryController extends Controller
     {
         try{
             DB::transaction(function() use($id){
-                DB::table('categorys')->where('id', $id)->delete();
+                DB::table('posts')->where('id', $id)->delete();
             });
 
             $json = [

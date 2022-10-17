@@ -3,23 +3,23 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">Edit Produk</h5>
+            <h5 class="modal-title">Edit Kategori</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label for="name">Nama</label>
+                <label for="name">Nama Kategori</label>
                 <input type="text" class="form-control" id="name" name="name">
             </div>
             <div class="form-group">
-                <label for="createName">Kategori Detail</label>
-                <input type="text" class="form-control" id="createName" name="detail">
+                <label for="detail">Kategori Detail</label>
+                <input type="text" class="form-control" id="detail" name="detail">
             </div>
             <div class="form-group">
-                <label for="createPrice">Slug</label>
-                <input type="text" class="form-control" id="createPrice" name="slug">
+                <label for="slug">Slug</label>
+                <input type="text" class="form-control" id="slug" name="slug">
             </div>
         </div>
         <div class="modal-footer">

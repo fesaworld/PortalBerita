@@ -8,4 +8,6 @@ Route::group([
     'middleware' => 'auth',
 ], function() {
     require_once('includes/category.php');
+    require_once('includes/post.php');
+    require_once('includes/seePost.php');
 });

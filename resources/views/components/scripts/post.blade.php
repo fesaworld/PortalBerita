@@ -1,5 +1,5 @@
-<script>
-    let category_id;
+ku nger<script>
+    let post_id;
 
     const create = () => {
         $('#createForm').trigger('reset');
@@ -28,7 +28,7 @@
 
                 $.ajax({
                     type: "delete",
-                    url: `/category/${id}`,
+                    url: `/post/${id}`,
                     dataType: "json",
                     success: function (response) {
                         Swal.close();
@@ -64,19 +64,20 @@
             }
         });
 
-        category_id = id;
+        post_id = id;
 
         $.ajax({
             type: "get",
-            url: `/category/${category_id}`,
+            url: `/post/${post_id}`,
             dataType: "json",
             success: function (response) {
-                $('#name').val(response.category_name);
-                $('#detail').val(response.category_detail);
-                $('#slug').val(response.category_slug);
+                $('#title').val(response.title);
+                $('#category_id').val(response.category_id);
+                $('#body').val(response.body);
+                $('#image').val(response.image);
 
-                Swal.close();
                 $('#editModal').modal('show');
+                Swal.close();
             }
         });
     }
@@ -88,7 +89,7 @@
             }
         });
 
-
+{{--  ini buat tampilan tabel view utama  --}}
         $('#table').DataTable({
             order: [],
             lengthMenu: [[10, 25, 50, 100, -1], ['10', '25', '50', '100', 'Semua']],
@@ -97,14 +98,16 @@
             responsive: true,
             serverSide: true,
             ajax: {
-                url: '/category/lihatKategori'
+                url: '/post/viewPost'
             },
             "columns":
             [
                 { data: 'DT_RowIndex', orderable: false, searchable: false},
-                { data: 'category_name', name:'category.category_name'},
-                { data: 'category_detail', name:'category.category_name'},
-                { data: 'category_slug', name:'category.category_name'},
+                { data: 'title', name:'post.title'},
+                { data: 'post_category', name:'categorys.category_name'},
+                { data: 'slug', name:'post.slug'},
+                { data: 'body', name:'post.body'},
+                { data: 'image', name:'post.image'},
                 { data: 'action', orderable: false, searchable: false},
             ]
         });
@@ -121,34 +124,34 @@
                 willOpen: () => {
                     Swal.showLoading()
                 }
-            });
+            }
+        );
 
-            $.ajax({
-                type: "post",
-                url: "/category",
-                data: formData,
-                dataType: "json",
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    Swal.close();
+        $.ajax({
+            type: "post",
+            url: "/post",
+            data: formData,
+            dataType: "json",
+            cache: false,
+            processData: false,
+            success: function(data) {
+                Swal.close();
 
-                    if(data.status) {
-                        Swal.fire(
-                            'Success!',
-                            data.msg,
-                            'success'
-                        )
+                if(data.status) {
+                    Swal.fire(
+                        'Success!',
+                        data.msg,
+                        'success'
+                    )
 
-                        $('#createModal').modal('hide');
-                        $('#table').DataTable().ajax.reload();
-                    } else {
-                        Swal.fire(
-                            'Error!',
-                            data.msg,
-                            'warning'
-                        )
-                    }
+                    $('#createModal').modal('hide');
+                    $('#table').DataTable().ajax.reload();
+                } else {
+                    Swal.fire(
+                        'Error!',
+                        data.msg,
+                        'warning'
+                    )}
                 }
             })
         });
@@ -169,7 +172,7 @@
 
             $.ajax({
                 type: "post",
-                url: `/category/${category_id}`,
+                url: `/post/${post_id}`,
                 data: formData,
                 dataType: "json",
                 cache: false,
@@ -184,7 +187,7 @@
                             'success'
                         )
 
-                        category_id = null;
+                        post_id = null;
                         $('#editModal').modal('hide');
                         $('#table').DataTable().ajax.reload();
                     } else {

@@ -43,7 +43,7 @@ class AuthController extends Controller
 
 
         if(Auth::check()) {
-            return redirect()->to('/category');
+            return redirect()->to('/seePost');
         }
 
         return redirect()->back()->withErrors(['error' => 'Email / Password salah'])->withInput($request->all);
