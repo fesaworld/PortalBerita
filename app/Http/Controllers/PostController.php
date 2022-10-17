@@ -43,17 +43,39 @@ class PostController extends Controller
                 'status'    => false
             ];
         } else {
-            try {
-                DB::transaction(function () use ($request) {
-                    DB::table('posts')->insert([
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'title' => $request->title,
-                        'category_id' => $request->category_id,
-                        'slug' => Str::slug($request->title, '-'),
-                        'body' => $request->body,
-                        'image' => $request->image,
-                    ]);
-                });
+  
+
+            try{
+                if($request->file('image'))
+                {
+                    $post_image = $request->file('image');
+                    $extension  = $post_image->getClientOriginalExtension();
+                    $featuredImageName  = date('YmdHis').'.'.$extension;
+                    $destination = base_path('public/assets/image/');
+                    $post_image->move($destination, $featuredImageName);
+
+                    DB::transaction(function() use($request, $featuredImageName) {
+                        DB::table('posts')->insert([
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'title' => $request->title,
+                            'category_id' => $request->category_id,
+                            'slug' => Str::slug($request->title, '-'),
+                            'body' => $request->body,
+                            'image' => $featuredImageName,
+                        ]);
+                    });
+                }else{
+                    DB::transaction(function() use($request) {
+                        DB::table('posts')->insert([
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'title' => $request->title,
+                            'category_id' => $request->category_id,
+                            'slug' => Str::slug($request->title, '-'),
+                            'body' => $request->body,
+                        ]);
+                    });
+                }
+
 
                 $json = [
                     'msg' => 'Kategori berhasil ditambahkan',
@@ -67,7 +89,6 @@ class PostController extends Controller
                 ];
             }
         }
-
         return Response::json($json);
     }
 
@@ -119,17 +140,49 @@ class PostController extends Controller
                 'status'    => false
             ];
         } else {
-            try {
-                DB::transaction(function () use ($request, $id) {
-                    DB::table('posts')->where('id', $id)->update([
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'title' => $request->title,
-                        'category_id' => $request->category_id,
-                        'slug' => Str::slug($request->title, '-'),
-                        'body' => $request->body,
-                        'image' => $request->image,
-                    ]);
-                });
+
+            try{
+                if($request->file('image'))
+                {
+                    $post_image = $request->file('image');
+                    $fileName = DB::table('posts')->where('id', $id)->get()->first()->image;
+
+                    if($fileName)
+                    {
+                        $pleaseRemove = base_path('public/assets/image/').$fileName;
+
+                        if(file_exists($pleaseRemove)) {
+                            unlink($pleaseRemove);
+                        }
+                    }
+
+                    $extension  = $post_image->getClientOriginalExtension();
+                    $featuredImageName  = date('YmdHis').'.'.$extension;
+                    $destination = base_path('public/assets/image/');
+                    $post_image->move($destination, $featuredImageName);
+
+                    DB::transaction(function() use($request, $id, $featuredImageName) {
+                        DB::table('posts')->where('id', $id)->update([
+                            'updated_at' => date('Y-m-d H:i:s'),
+                            'title' => $request->title,
+                            'category_id' => $request->category_id,
+                            'slug' => Str::slug($request->title, '-'),
+                            'body' => $request->body,
+                            'image' => $featuredImageName,
+                        ]);
+                    });
+                }else{
+                    DB::transaction(function() use($request, $id) {
+                        DB::table('posts')->where('id', $id)->update([
+                            'updated_at' => date('Y-m-d H:i:s'),
+                            'title' => $request->title,
+                            'category_id' => $request->category_id,
+                            'slug' => Str::slug($request->title, '-'),
+                            'body' => $request->body,
+                        ]);
+                    });
+                }
+
 
                 $json = [
                     'msg' => 'Produk berhasil disunting',
@@ -149,8 +202,17 @@ class PostController extends Controller
 
     public function destroy($id)
     {
-        try {
-            DB::transaction(function () use ($id) {
+
+        try{
+            $fileName = DB::table('posts')->where('id', $id)->get()->first()->image;
+            $pleaseRemove = base_path('public/assets/image/').$fileName;
+
+            if(file_exists($pleaseRemove)) {
+                unlink($pleaseRemove);
+            }
+
+            DB::transaction(function() use($id){
+
                 DB::table('posts')->where('id', $id)->delete();
             });
 

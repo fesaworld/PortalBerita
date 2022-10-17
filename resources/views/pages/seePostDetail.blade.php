@@ -21,28 +21,32 @@
 
       <!-- Main content -->
       <section class="content">
+        <div class="content">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Default box -->
+                    <div class="card">
+                        @if($post->image)
+                        <img src={{ asset('assets/image/' . $post->image) }} alt={{ $post->title }} class="card-img-top">
+                    @endif
+                    <div class="card-header">
+                        <h3 class="card-title">< <a href="{{ route('posts')}}">Back</a></h3>
 
-        <!-- Default box -->
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">< <a href="{{ route('posts')}}">Back</a></h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-            <div class="card-body">
-                    {{--  @dd($post)  --}}
-                    <br>
-
-                        <h1>{{$post->title}}</h1>
-                        <p>{{$post->body}}</p>
-
-                    </br>
+                        <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        </div>
+                        <div class="card-body">
+                                <h1>{{$post->title}}</h1>
+                                <p>{{$post->body}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- /.card -->
