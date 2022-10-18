@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -58,7 +63,9 @@ class AuthController extends Controller
 
     public function view()
     {
-        return view('welcome');
+        $posts = DB::table('posts')->orderBy('posts.id', 'desc')->get();
+
+        return view('welcome', ['posts' => $posts]);
     }
 
     public function loginUser()

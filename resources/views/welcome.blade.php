@@ -18,28 +18,31 @@
       </section>
 
       <!-- Main content -->
+      <!-- Main content -->
       <section class="content">
+        <div class="content">
+                <div class="row">
+                    @foreach ($posts as $post)
+                        <!-- Default box -->
+                        <div class="col-4">
+                            <div class="card">
+                                @if($post->image)
+                                    <img src={{ asset('assets/image/' . $post->image) }} alt={{ $post->title }} class="card-img-top" width="500" height="250">
+                                @endif
+                                <div class="card-header">
+                                    <h3 class="card-title"><b>{{ $post->title }}</b></h3>
+                                    <div class="card-body">
+                                        <p class="card-text">{!! Str::limit($post->body, 10) !!}</p>
+                                        <a href={{ route('show', $post->slug )}} class="btn btn-primary">Lihat Berita</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                    <!-- /.card -->
+                </div>
 
-        <!-- Default box -->
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">List Berita</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <div class="card-body">
-
-          </div>
         </div>
-        <!-- /.card -->
-
       </section>
       <!-- /.content -->
 @endsection

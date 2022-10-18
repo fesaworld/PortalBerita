@@ -26,17 +26,17 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-                    with font-awesome or any other icon font library -->
+                <li class="nav-header"><b>List Berita</b></li>
+                @foreach ($posts as $post)
                 <li class="nav-item">
-                <a href="{{ url('/category') }}" class="nav-link">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                <a href={{ route('show', $post->slug )}} class="nav-link">
                     <p>
-                    Dashboard
+                        {{ $post->title }}
                     </p>
                 </a>
                 </li>
-                <li class="nav-header">List Berita</li>
+
+                @endforeach
             </ul>
         </nav>
     @endguest
