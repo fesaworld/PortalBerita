@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Exception;
+
+use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
@@ -29,7 +31,7 @@ class AuthController extends Controller
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
 
@@ -38,7 +40,7 @@ class AuthController extends Controller
             'password'  => $request->password,
         ];
 
-        if($request->has('remember')) {
+        if ($request->has('remember')) {
             $remember = true;
         } else {
             $remember = false;
@@ -47,7 +49,7 @@ class AuthController extends Controller
         Auth::attempt($data, $remember);
 
 
-        if(Auth::check()) {
+        if (Auth::check()) {
             return redirect()->to('/seePost');
         }
 

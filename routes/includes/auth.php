@@ -4,14 +4,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'middleware' => 'guest',
-], function() {
-    Route::get('/', 'AuthController@view');
+], function () {
     Route::get('/login', 'AuthController@loginUser');
     Route::post('/', 'AuthController@login');
 });
 
 Route::group([
     'middleware' => 'auth',
-], function() {
+], function () {
     Route::get('/logout', 'AuthController@logout');
 });
