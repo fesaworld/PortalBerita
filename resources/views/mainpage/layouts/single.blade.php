@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Portal News</title>
+    <title>Kopet News</title>
 
     <!-- mobile responsive meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -70,13 +70,15 @@
                 </div>
                 <div class="col-md-1 text-center mb-4">
                     <a class="navbar-brand order-1" href="/">
-                        Portal News
+                        Kopet News
                     </a>
                 </div>
                 <div class="col-md-5 text-md-right text-center mb-4">
                     <ul class="list-inline footer-list mb-0">
 
-                        <li class="list-inline-item"><a href="#"><i class="ti-facebook"></i></a></li>
+                        <strong>Candradimuka Jabar Coding Camp</strong>
+
+                        {{--  <li class="list-inline-item"><a href="#"><i class="ti-facebook"></i></a></li>
 
                         <li class="list-inline-item"><a href="#"><i class="ti-twitter-alt"></i></a></li>
 
@@ -84,7 +86,7 @@
 
                         <li class="list-inline-item"><a href="#"><i class="ti-github"></i></a></li>
 
-                        <li class="list-inline-item"><a href="#"><i class="ti-youtube"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="ti-youtube"></i></a></li>  --}}
 
                     </ul>
                 </div>

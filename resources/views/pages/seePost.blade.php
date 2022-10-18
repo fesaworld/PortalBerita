@@ -31,9 +31,8 @@
                                 @endif
                                 <div class="card-header">
                                     <h3 class="card-title"><b>{{ $post->title }}</b></h3>
-                                    <div class="card-body">
-                                        <p class="card-text">{!! Str::limit($post->body, 10) !!}</p>
-                                        <a href={{ route('show', $post->slug )}} class="btn btn-primary">Lihat Berita</a>
+                                    <div class="card-footer bg-transparent border-success text-right">
+                                        <a href={{ route('show', $post->slug )}}>Lihat Berita</a>
                                     </div>
                                 </div>
                             </div>

@@ -3,7 +3,7 @@
     <div class="container">
         <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
             <a class="navbar-brand order-1" href="/">
-                Portal News
+                Kopet News
             </a>
 
 
