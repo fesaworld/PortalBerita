@@ -43,7 +43,7 @@ class PostController extends Controller
                 'status'    => false
             ];
         } else {
-  
+
 
             try{
                 if($request->file('image'))
@@ -108,6 +108,12 @@ class PostController extends Controller
             ->orderBy('posts.id', 'desc');
 
         return DataTables::of($data)
+            ->editColumn('image', function($row){
+                $data = array('image' => $row->image);
+
+                return view('components.image', $data);
+            })
+
             ->addColumn(
                 'action',
                 function ($row) {
